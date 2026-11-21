@@ -1,4 +1,20 @@
 const musicLibrary = {
+  "releases": [
+    {
+      "id": "chime-win-and-lose",
+      "title": "Win & Lose",
+      "artist": "Chime",
+      "genre": "Melodic dubstep",
+      "path": "song/Chime - Win & Lose  Melodic Dubstep  NCS13 - Copyright Free Music.mp3"
+    },
+    {
+      "id": "hush-models",
+      "title": "Models",
+      "artist": "Hush",
+      "genre": "Dubstep",
+      "path": "song/Hush - Models  Dubstep  NCS - Copyright Free Music.mp3"
+    }
+  ],
   "collections": {
     "discover-song": [
       {

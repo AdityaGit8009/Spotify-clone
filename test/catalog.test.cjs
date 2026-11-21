@@ -26,3 +26,13 @@ test("artwork-only entries never advertise a playback source", () => {
     assert.equal(track.path, undefined, track.title);
   }
 });
+
+test("the playable library exactly matches the two bundled MP3s and their performers", () => {
+  const files = fs.readdirSync(path.join(app, "song")).filter(name => name.endsWith(".mp3"));
+  assert.deepEqual(library.releases.map(track => track.path).sort(), files.map(name => `song/${name}`).sort());
+  assert.deepEqual(library.releases.map(({artist, title}) => [artist, title]), [
+    ["Chime", "Win & Lose"],
+    ["Hush", "Models"],
+  ]);
+  for (const track of library.releases) assertExactAsset(track.path);
+});
