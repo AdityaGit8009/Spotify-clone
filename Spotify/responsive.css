@@ -1,47 +1,37 @@
 @media (max-width: 54rem) {
   .layout { display: block; }
-  .sidebar { padding: .5rem 1rem; border: 0; border-bottom: 1px solid var(--border); }
-  .sidebar nav { display: flex; gap: .25rem; overflow-x: auto; }
+  .sidebar {
+    position: static;
+    max-height: none;
+    padding: .5rem 1rem;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar nav { display: flex; gap: .25rem; padding: .25rem; overflow-x: auto; }
   .sidebar nav a { flex: 0 0 auto; }
   .sidebar h2, .credit { display: none; }
   main { padding-top: 1.6rem; }
 }
 
 @media (max-width: 40rem) {
-  .topbar { min-height: 3.7rem; }
+  :root { --dock-height: 8rem; }
+  .topbar { min-height: 3.7rem; flex-wrap: wrap; gap: .5rem 1rem; }
+  .library-search { order: 1; flex-basis: 100%; max-width: none; }
   .release-grid { grid-template-columns: 1fr; }
   .release { min-height: 4.5rem; }
   .release-copy strong { font-size: 1.23rem; }
   .shelf { margin-top: 2rem; }
   .cardwrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem .75rem; }
-  .audio-player { padding: .55rem 1rem max(.55rem, env(safe-area-inset-bottom)); }
+  .audio-player {
+    grid-template-columns: 8.75rem minmax(0, 1fr);
+    grid-template-areas: "track sound" "transport timeline";
+    gap: .25rem .65rem;
+    padding: .55rem 1rem max(.55rem, env(safe-area-inset-bottom));
+  }
+  .timeline { gap: .3rem; font-size: .72rem; }
 }
 
 @media (max-width: 22rem) {
   main { padding-inline: .85rem; }
   .sidebar { padding-inline: .5rem; }
-  .topbar-label { display: none; }
-}
-
-@media (max-width: 40rem) {
-  :root { --dock-height: 7.5rem; }
-  .audio-player {
-    grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "track sound" "transport timeline";
-    gap: .25rem .65rem;
-  }
-  .timeline { gap: .3rem; font-size: .72rem; }
-}
-
-@media (max-width: 40rem) {
-  .topbar { flex-wrap: wrap; gap: .5rem 1rem; }
-  .library-search { order: 1; flex-basis: 100%; max-width: none; }
-}
-
-@media (max-width: 54rem) {
-  .sidebar { position: static; max-height: none; }
-}
-
-@media (max-width: 54rem) {
-  .sidebar nav { padding: .25rem; }
 }

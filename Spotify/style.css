@@ -6,7 +6,7 @@
   --text: #f0f4ec;
   --muted: #adbaaf;
   --accent: #c8fb8e;
-  --dock-height: 5.4rem;
+  --dock-height: 6rem;
   font-family: "Inter", "Segoe UI", system-ui, sans-serif;
   color: var(--text);
   background: var(--page);
@@ -40,7 +40,7 @@ button:disabled, input:disabled { cursor: default; }
   color: #172213;
   font: italic 800 1.55rem Georgia, serif;
 }
-.topbar-label, .credit { color: var(--muted); font-size: .85rem; }
+.credit { color: var(--muted); font-size: .85rem; }
 .layout { display: grid; grid-template-columns: 14rem minmax(0, 1fr); max-width: 110rem; margin: auto; }
 .sidebar { padding: 2.4rem 1.25rem; border-right: 1px solid var(--border); }
 .sidebar nav { display: grid; gap: .35rem; }
@@ -109,16 +109,15 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
   position: fixed;
   z-index: 3;
   inset: auto 0 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 2fr) minmax(0, 1fr);
+  grid-template-areas: "track transport sound" "track timeline sound";
   align-items: center;
-  justify-content: center;
+  gap: .15rem 1rem;
   padding: .75rem 1.5rem;
   border-top: 1px solid var(--border);
   background: #1b231f;
 }
-.audio-player audio { width: min(100%, 42rem); }
-
-.audio-player { justify-content: space-between; gap: 1rem; }
 .now-playing { min-width: 0; display: grid; gap: .12rem; }
 .now-playing strong, .now-playing span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .now-playing span { color: var(--muted); font-size: .85rem; }
@@ -140,12 +139,6 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
 .transport button:not(.primary-control) { color: var(--muted); font-size: .82rem; }
 .transport button:not(.primary-control):hover { color: var(--text); background: #2a352e; }
 
-.audio-player {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15rem, 2fr) minmax(0, 1fr);
-  grid-template-areas: "track transport sound" "track timeline sound";
-  gap: .15rem 1rem;
-}
 .now-playing { grid-area: track; }
 .transport { grid-area: transport; }
 .timeline {
@@ -171,7 +164,7 @@ input[type="range"] { width: 100%; min-width: 0; height: 1.5rem; margin: 0; acce
 }
 .volume-controls input { width: clamp(2.8rem, 6vw, 7rem); }
 
-.now-playing small { color: var(--accent); font-size: .73rem; }
+.now-playing small { color: var(--accent); font-size: .73rem; overflow-wrap: anywhere; }
 
 .shortcut-help { position: relative; z-index: 4; color: var(--muted); font-size: .85rem; }
 .shortcut-help summary { cursor: pointer; padding: .5rem .25rem; }

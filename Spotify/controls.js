@@ -91,3 +91,13 @@ document.addEventListener("keydown", event => {
   }
   event.preventDefault();
 });
+
+const dock = document.querySelector(".audio-player");
+if ("ResizeObserver" in window) {
+  const updateDockHeight = () => {
+    const height = Math.ceil(dock.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--dock-height", `${height}px`);
+  };
+  new ResizeObserver(updateDockHeight).observe(dock);
+  updateDockHeight();
+}

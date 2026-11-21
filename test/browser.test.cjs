@@ -204,3 +204,28 @@ test("a delayed rejection from an old track cannot overwrite the current playing
   assert.equal(await page.locator("#playback-status").textContent(), "Playing");
   assert.equal(await page.locator("#toggle-play").getAttribute("aria-label"), "Pause");
 });
+
+test("the dock clears the final cover and leaves room to seek even with a playback error", async t => {
+  const page = await newPage(t);
+  await page.route("**/song/**", route => route.fulfill({status: 404, body: ""}));
+  await page.goto(site.base + "Spotify/index.html");
+  await page.waitForFunction(() => document.querySelector("#playback-status").textContent.includes("retry"));
+  for (const width of [320, 375, 768, 1024, 1366]) {
+    await page.setViewportSize({width, height: 720});
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await page.waitForFunction(() => {
+      const dock = document.querySelector(".audio-player").getBoundingClientRect();
+      const reserved = parseFloat(document.documentElement.style.getPropertyValue("--dock-height"));
+      return Math.ceil(dock.height) === reserved;
+    });
+    const layout = await page.evaluate(() => ({
+      seekWidth: document.querySelector("#seek").getBoundingClientRect().width,
+      pageWidth: document.documentElement.scrollWidth,
+      lastBottom: document.querySelector("#popular-song .card:last-child").getBoundingClientRect().bottom,
+      dockTop: document.querySelector(".audio-player").getBoundingClientRect().top,
+    }));
+    assert.ok(layout.seekWidth >= 44, `Seek width at ${width}px: ${layout.seekWidth}`);
+    assert.ok(layout.pageWidth <= width, `Page overflows at ${width}px`);
+    assert.ok(layout.lastBottom <= layout.dockTop, `Last cover is obscured at ${width}px`);
+  }
+});
