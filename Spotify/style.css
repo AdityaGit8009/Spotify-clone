@@ -1,0 +1,112 @@
+:root {
+  color-scheme: dark;
+  --page: #101513;
+  --surface: #19201d;
+  --border: #324039;
+  --text: #f0f4ec;
+  --muted: #adbaaf;
+  --accent: #c8fb8e;
+  --dock-height: 5.4rem;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  color: var(--text);
+  background: var(--page);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; min-width: 0; }
+button, input { font: inherit; }
+a { color: inherit; }
+button { color: inherit; cursor: pointer; }
+button:disabled, input:disabled { cursor: default; }
+
+.topbar {
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .75rem clamp(1rem, 3vw, 3rem);
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: inline-flex; align-items: center; gap: .7rem; font-weight: 750; text-decoration: none; }
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #172213;
+  font: italic 800 1.55rem Georgia, serif;
+}
+.topbar-label, .credit { color: var(--muted); font-size: .85rem; }
+.layout { display: grid; grid-template-columns: 14rem minmax(0, 1fr); max-width: 110rem; margin: auto; }
+.sidebar { padding: 2.4rem 1.25rem; border-right: 1px solid var(--border); }
+.sidebar nav { display: grid; gap: .35rem; }
+.sidebar h2 { margin: 0 0 1rem .7rem; color: var(--muted); font-size: .82rem; letter-spacing: .04em; }
+.sidebar a { padding: .65rem .7rem; border-radius: .5rem; text-decoration: none; font-size: .94rem; }
+.sidebar a:hover { background: var(--surface); }
+.credit { margin: 3rem .7rem 0; line-height: 1.6; }
+.credit strong { display: block; color: var(--text); }
+main { min-width: 0; padding: clamp(1.5rem, 3.2vw, 3.6rem) clamp(1.25rem, 3.6vw, 4.5rem) calc(var(--dock-height) + 2.5rem); }
+h1, h2 { line-height: 1.1; }
+h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.065em; }
+.shelf { margin-top: 2.6rem; }
+.shelf h2 { font-size: clamp(1.35rem, 2.3vw, 2rem); letter-spacing: -.045em; margin: 0 0 1rem; }
+
+.release-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+.release {
+  --vinyl: #b6ec8b;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(.7rem, 1.5vw, 1.3rem);
+  text-align: left;
+  padding: .75rem;
+  border: 1px solid var(--border);
+  border-radius: .85rem;
+  background: var(--surface);
+}
+.release[data-track="hush-models"] { --vinyl: #cfb2ff; }
+.release:hover { border-color: var(--vinyl); }
+.sleeve {
+  width: clamp(3.5rem, 6vw, 6rem);
+  aspect-ratio: 1;
+  border-radius: .45rem;
+  background:
+    radial-gradient(circle, #121913 0 4%, var(--vinyl) 5% 16%, transparent 17%),
+    repeating-radial-gradient(circle, #19221d 17% 19%, #354139 20% 21%, #151e19 22% 24%, transparent 25% 27%) center / 79% 79% no-repeat,
+    linear-gradient(135deg, var(--vinyl), #344139);
+}
+.release-copy { min-width: 0; display: grid; gap: .28rem; }
+.release-copy strong { font-size: clamp(1.05rem, 2vw, 1.55rem); letter-spacing: -.045em; }
+.release-copy > span { color: var(--muted); font-size: .88rem; }
+.release-action {
+  display: grid;
+  place-items: center;
+  margin-right: .25rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--vinyl);
+  color: #142012;
+  font-size: .85rem;
+}
+.cardwrapper { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr)); gap: 1.3rem 1rem; }
+.card { min-width: 0; }
+.card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .6rem; background: var(--surface); }
+.track-title { display: block; margin: .6rem 0 .2rem; font-size: .95rem; font-weight: 650; line-height: 1.35; }
+.card small { color: var(--muted); font-size: .76rem; }
+.audio-player {
+  position: fixed;
+  z-index: 3;
+  inset: auto 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .75rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: #1b231f;
+}
+.audio-player audio { width: min(100%, 42rem); }
