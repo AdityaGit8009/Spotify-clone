@@ -2,6 +2,7 @@ const assert = require("node:assert/strict");
 const test = require("node:test");
 const {chromium} = require("playwright-core");
 const {serveLibrary} = require("./support/site.cjs");
+const library = require("../Spotify/catalog.js");
 
 let site;
 let browser;
@@ -49,7 +50,9 @@ test("root launch preserves query and shelf fragment under a project subdirector
 test("the original player URL loads every visible and deferred cover", async t => {
   const page = await newPage(t);
   await page.goto(site.base + "Spotify/index.html");
-  for (const image of await page.locator(".card img").all()) {
+  const images = await page.locator(".card img").all();
+  assert.equal(images.length, 22);
+  for (const image of images) {
     await image.scrollIntoViewIfNeeded();
     await image.evaluate(element => element.decode());
     assert.ok(await image.evaluate(element => element.naturalWidth > 0));
@@ -227,5 +230,22 @@ test("the dock clears the final cover and leaves room to seek even with a playba
     assert.ok(layout.seekWidth >= 44, `Seek width at ${width}px: ${layout.seekWidth}`);
     assert.ok(layout.pageWidth <= width, `Page overflows at ${width}px`);
     assert.ok(layout.lastBottom <= layout.dockTop, `Last cover is obscured at ${width}px`);
+  }
+});
+
+test("root launch still exposes both original recordings with JavaScript disabled", async t => {
+  const page = await newPage(t, {javaScriptEnabled: false, viewport: {width: 375, height: 780}});
+  await page.goto(site.base);
+  await page.waitForURL(site.base + "Spotify/index.html");
+  const players = page.locator(".fallback-releases audio[controls]:visible");
+  assert.equal(await players.count(), library.releases.length);
+  assert.equal(await page.locator(".audio-player").isVisible(), false);
+  for (const [index, track] of library.releases.entries()) {
+    const src = await players.nth(index).getAttribute("src");
+    assert.equal(src, track.path);
+    const response = await page.request.get(new URL(src, page.url()).href, {headers: {Range: "bytes=0-9"}});
+    assert.equal(response.status(), 206);
+    const header = await response.body();
+    assert.equal(header.subarray(0, 3).toString("ascii"), "ID3");
   }
 });
