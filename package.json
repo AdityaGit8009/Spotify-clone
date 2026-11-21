@@ -1,0 +1,15 @@
+{
+  "name": "spotify-clone-library",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/catalog.test.cjs",
+    "test:browser": "node --test test/browser.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "playwright-core": "1.65.1"
+  }
+}
