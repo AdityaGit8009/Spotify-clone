@@ -100,6 +100,14 @@ const musicLibrary = {
       {
         "title": "Tum Hi Ho Aashiqui 2",
         "image": "images/tum hi ho aasiqi 2.jpeg"
+      },
+      {
+        "title": "Dil Meri Na Sune",
+        "image": "images/Dil meri naa sune.jpeg"
+      },
+      {
+        "title": "Nagri Ho Ayodhya Si",
+        "image": "images/nagri ho ayodhya si.jpeg"
       }
     ]
   }

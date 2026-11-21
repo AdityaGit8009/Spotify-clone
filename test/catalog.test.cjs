@@ -36,3 +36,12 @@ test("the playable library exactly matches the two bundled MP3s and their perfor
   ]);
   for (const track of library.releases) assertExactAsset(track.path);
 });
+
+test("the shelves expose every bundled cover and preserve the repeated original placement", () => {
+  const tracks = Object.values(library.collections).flat();
+  const images = fs.readdirSync(path.join(app, "images")).map(name => `images/${name}`).sort();
+  assert.deepEqual([...new Set(tracks.map(track => track.image))].sort(), images);
+  for (const shelf of ["discover-song", "popular-song"]) {
+    assert.ok(library.collections[shelf].some(track => track.image === "images/mera naam tu.jpeg"));
+  }
+});
