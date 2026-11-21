@@ -80,7 +80,10 @@ function moveTrack(direction) {
 }
 
 function makeCoverCard(track) {
-  const card = document.createElement("article");
+  const card = document.createElement("button");
+  card.type = "button";
+  card.setAttribute("aria-label", `View artwork for ${track.title}. Audio unavailable.`);
+  card.setAttribute("aria-haspopup", "dialog");
   card.className = "card";
   card.dataset.search = track.title;
 

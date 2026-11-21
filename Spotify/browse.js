@@ -49,3 +49,30 @@ search.addEventListener("keydown", event => {
   }
 });
 clearSearch.addEventListener("click", resetSearch);
+
+const preview = document.querySelector("#cover-preview");
+const previewImage = document.querySelector("#preview-image");
+let previewTrigger = null;
+
+document.querySelector("#library").addEventListener("click", event => {
+  const card = event.target.closest(".card");
+  if (!card) return;
+  previewTrigger = card;
+  const title = card.querySelector(".track-title").textContent;
+  document.querySelector("#preview-title").textContent = title;
+  previewImage.src = card.querySelector("img").getAttribute("src");
+  previewImage.alt = `Cover artwork for ${title}`;
+  preview.showModal();
+});
+document.querySelector("#close-preview").addEventListener("click", () => preview.close());
+preview.addEventListener("close", () => {
+  previewImage.removeAttribute("src");
+  previewTrigger?.focus({preventScroll: true});
+  previewTrigger = null;
+});
+preview.addEventListener("click", event => {
+  if (event.target !== preview) return;
+  const bounds = preview.getBoundingClientRect();
+  if (event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom) preview.close();
+});
