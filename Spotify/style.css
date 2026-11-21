@@ -95,7 +95,14 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
 }
 .cardwrapper { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(9.5rem, 100%), 1fr)); gap: 1.3rem 1rem; }
 .card { min-width: 0; }
-.card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .6rem; background: var(--surface); }
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  border-radius: .6rem;
+  background: #1d2621;
+}
 .track-title { display: block; margin: .6rem 0 .2rem; font-size: .95rem; font-weight: 650; line-height: 1.35; }
 .card small { color: var(--muted); font-size: .76rem; }
 .audio-player {

@@ -88,6 +88,8 @@ function makeCoverCard(track) {
   card.dataset.search = track.title;
 
   const image = document.createElement("img");
+  image.loading = "lazy";
+  image.decoding = "async";
   image.src = track.image;
   image.alt = "";
 
