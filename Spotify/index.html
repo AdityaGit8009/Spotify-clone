@@ -13,6 +13,7 @@
   <script defer src="browse.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#library">Skip to library</a>
   <header class="topbar">
     <a class="brand" href="#releases"><span class="brand-mark" aria-hidden="true">A.</span>Spotify clone</a>
     <form class="library-search" role="search">
@@ -25,6 +26,7 @@
         <dt>Space</dt><dd>Play or pause</dd>
         <dt>← / →</dt><dd>Seek 5 seconds</dd>
         <dt>M</dt><dd>Mute or unmute</dd>
+        <dt>/</dt><dd>Focus search</dd>
       </dl>
     </details>
   </header>
@@ -39,7 +41,7 @@
       </nav>
       <p class="credit">Made by <strong>Aditya Pratap Vishwakarma</strong> with #teamDigiCoders</p>
     </aside>
-    <main id="library">
+    <main id="library" tabindex="-1">
       <p id="search-status" role="status" aria-live="polite"></p>
       <section id="releases" class="release-section" aria-labelledby="local-title">
         <h1 id="local-title">Local releases</h1>

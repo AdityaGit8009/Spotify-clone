@@ -67,7 +67,8 @@ document.addEventListener("keydown", event => {
   if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
   const target = event.target;
   if (!(target instanceof Element) || target.isContentEditable) return;
-  if (target.closest("input, textarea, select, button, a, summary, dialog, [role='textbox']")) return;
+  if (target.closest("input, textarea, select, dialog, [role='textbox']")) return;
+  if (event.key === " " && target.closest("button, a, summary")) return;
 
   switch (event.key.toLowerCase()) {
     case " ":
@@ -75,6 +76,9 @@ document.addEventListener("keydown", event => {
       break;
     case "m":
       if (!event.repeat) toggleMute();
+      break;
+    case "/":
+      document.querySelector("#library-search").focus();
       break;
     case "arrowleft":
       seekTo(audio.currentTime - 5);

@@ -41,3 +41,7 @@
 @media (max-width: 54rem) {
   .sidebar { position: static; max-height: none; }
 }
+
+@media (max-width: 54rem) {
+  .sidebar nav { padding: .25rem; }
+}
