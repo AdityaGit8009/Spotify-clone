@@ -80,10 +80,10 @@
     <p id="preview-note">Artwork only. Audio is unavailable for this title.</p>
   </dialog>
   <footer class="audio-player" aria-label="Music player">
-    <div class="now-playing">
+    <div class="now-playing" role="status" aria-live="polite" aria-atomic="true">
       <strong id="current-title">Select a release</strong>
       <span id="current-artist"></span>
-      <small id="playback-status" role="status" aria-live="polite" aria-atomic="true">Ready</small>
+      <small id="playback-status">Ready</small>
     </div>
     <div class="transport" hidden>
       <button type="button" id="previous" aria-label="Previous track">◀◀</button>

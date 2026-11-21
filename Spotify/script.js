@@ -26,8 +26,12 @@ function selectTrack(index) {
   }
 }
 
+function isPlaying() {
+  return !audio.paused && !audio.ended && !audio.error;
+}
+
 function syncPlayback() {
-  const playing = !audio.paused && !audio.ended;
+  const playing = isPlaying();
   const verb = playing ? "Pause" : "Play";
   let description = "Ready";
   if (playing) description = buffering ? "Loading" : "Playing";
@@ -62,7 +66,7 @@ function startPlayback() {
 }
 
 function togglePlayback() {
-  if (wantsPlayback || (!audio.paused && !audio.ended)) {
+  if (wantsPlayback || isPlaying()) {
     playRevision++;
     wantsPlayback = false;
     audio.pause();
@@ -73,7 +77,7 @@ function togglePlayback() {
 }
 
 function moveTrack(direction) {
-  const playing = wantsPlayback || (!audio.paused && !audio.ended);
+  const playing = wantsPlayback || isPlaying();
   selectTrack((selectedIndex + direction + tracks.length) % tracks.length);
   if (playing) startPlayback();
   syncPlayback();
@@ -147,9 +151,14 @@ selectTrack(0);
 playButton.addEventListener("click", togglePlayback);
 document.querySelector("#previous").addEventListener("click", () => moveTrack(-1));
 document.querySelector("#next").addEventListener("click", () => moveTrack(1));
-for (const event of ["play", "pause", "ended", "emptied"]) {
-  audio.addEventListener(event, syncPlayback);
-}
+audio.addEventListener("emptied", syncPlayback);
+audio.addEventListener("play", () => {
+  if (isPlaying()) {
+    wantsPlayback = true;
+    playbackMessage = "";
+  }
+  syncPlayback();
+});
 audio.addEventListener("ended", () => {
   if (!audio.ended) return;
   if (wantsPlayback && selectedIndex < tracks.length - 1) {
@@ -164,6 +173,7 @@ audio.addEventListener("waiting", () => { buffering = true; syncPlayback(); });
 audio.addEventListener("playing", () => { buffering = false; syncPlayback(); });
 audio.addEventListener("pause", () => {
   if (audio.paused && !audio.ended) wantsPlayback = false;
+  syncPlayback();
 });
 audio.addEventListener("error", () => {
   if (!audio.error) return;

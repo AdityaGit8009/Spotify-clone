@@ -89,6 +89,10 @@ test("natural completion advances once and leaves the final track ready to repla
   await page.getByRole("button", {name: "Play", exact: true}).click();
   await waitForPlayback(page, "Win & Lose");
   const media = page.locator("#audio");
+  await media.evaluate(element => element.pause());
+  await page.waitForFunction(() => document.querySelector("#playback-status").textContent === "Paused");
+  await media.evaluate(element => element.play());
+  await waitForPlayback(page, "Win & Lose");
   await media.evaluate(element => { element.currentTime = element.duration - 0.15; });
   await waitForPlayback(page, "Models");
   await media.evaluate(element => { element.currentTime = element.duration - 0.15; });
@@ -168,4 +172,35 @@ test("search filters matching shelves and previewing covers leaves the selected 
   await search.press("Escape");
   assert.equal(await page.locator(".card:visible").count(), 22);
   assert.equal(await page.locator(".release:visible").count(), 2);
+});
+
+test("a failed recording can be retried on the same selection", async t => {
+  const page = await newPage(t);
+  await page.route("**/song/**", route => route.fulfill({status: 404, body: ""}));
+  await page.goto(site.base + "Spotify/index.html");
+  await page.waitForFunction(() => document.querySelector("#playback-status").textContent.includes("retry"));
+  await page.unroute("**/song/**");
+  await page.getByRole("button", {name: "Play", exact: true}).click();
+  await waitForPlayback(page, "Win & Lose");
+  assert.equal(await page.locator("#playback-status").textContent(), "Playing");
+});
+
+test("a delayed rejection from an old track cannot overwrite the current playing status", async t => {
+  const page = await newPage(t);
+  await page.addInitScript(() => {
+    const nativePlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function () {
+      HTMLMediaElement.prototype.play = nativePlay;
+      return new Promise((resolve, reject) => {
+        window.rejectOldRequest = () => reject(new DOMException("Old request", "NotAllowedError"));
+      });
+    };
+  });
+  await page.goto(site.base + "Spotify/index.html");
+  await page.getByRole("button", {name: "Play Win & Lose by Chime"}).click();
+  await page.getByRole("button", {name: "Play Models by Hush"}).click();
+  await waitForPlayback(page, "Models");
+  await page.evaluate(() => window.rejectOldRequest());
+  assert.equal(await page.locator("#playback-status").textContent(), "Playing");
+  assert.equal(await page.locator("#toggle-play").getAttribute("aria-label"), "Pause");
 });
