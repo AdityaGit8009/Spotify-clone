@@ -31,7 +31,8 @@ function syncPlayback() {
 }
 
 function togglePlayback() {
-  if (audio.paused || audio.ended) audio.play();
+  if (audio.ended) audio.currentTime = 0;
+  if (audio.paused) audio.play();
   else audio.pause();
 }
 
@@ -106,6 +107,12 @@ document.querySelector("#next").addEventListener("click", () => moveTrack(1));
 for (const event of ["play", "pause", "ended", "emptied"]) {
   audio.addEventListener(event, syncPlayback);
 }
+audio.addEventListener("ended", () => {
+  if (audio.ended && selectedIndex < tracks.length - 1) {
+    selectTrack(selectedIndex + 1);
+    audio.play();
+  }
+});
 audio.controls = false;
 document.querySelector(".transport").hidden = false;
 syncPlayback();
