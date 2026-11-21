@@ -62,3 +62,28 @@ volume.addEventListener("input", () => {
 audio.addEventListener("volumechange", syncVolume);
 document.querySelector(".volume-controls").hidden = false;
 syncVolume();
+
+document.addEventListener("keydown", event => {
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  const target = event.target;
+  if (!(target instanceof Element) || target.isContentEditable) return;
+  if (target.closest("input, textarea, select, button, a, summary, dialog, [role='textbox']")) return;
+
+  switch (event.key.toLowerCase()) {
+    case " ":
+      if (!event.repeat) togglePlayback();
+      break;
+    case "m":
+      if (!event.repeat) toggleMute();
+      break;
+    case "arrowleft":
+      seekTo(audio.currentTime - 5);
+      break;
+    case "arrowright":
+      seekTo(audio.currentTime + 5);
+      break;
+    default:
+      return;
+  }
+  event.preventDefault();
+});
