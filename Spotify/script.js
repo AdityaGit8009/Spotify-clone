@@ -35,6 +35,13 @@ function togglePlayback() {
   else audio.pause();
 }
 
+function moveTrack(direction) {
+  const playing = !audio.paused && !audio.ended;
+  selectTrack((selectedIndex + direction + tracks.length) % tracks.length);
+  if (playing) audio.play();
+  syncPlayback();
+}
+
 function makeCoverCard(track) {
   const card = document.createElement("article");
   card.className = "card";
@@ -94,6 +101,8 @@ releaseList.append(...tracks.map(makeRelease));
 selectTrack(0);
 
 playButton.addEventListener("click", togglePlayback);
+document.querySelector("#previous").addEventListener("click", () => moveTrack(-1));
+document.querySelector("#next").addEventListener("click", () => moveTrack(1));
 for (const event of ["play", "pause", "ended", "emptied"]) {
   audio.addEventListener(event, syncPlayback);
 }

@@ -129,3 +129,6 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
 }
 .transport .primary-control { background: var(--accent); color: #172213; font-size: 1.1rem; font-weight: 750; }
 .transport .primary-control:hover { background: #ddffb5; }
+
+.transport button:not(.primary-control) { color: var(--muted); font-size: .82rem; }
+.transport button:not(.primary-control):hover { color: var(--text); background: #2a352e; }
