@@ -3,7 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=Spotify/index.html">
+  <script>
+    const player = new URL("Spotify/index.html", location.href);
+    player.search = location.search;
+    player.hash = location.hash;
+    location.replace(player.href);
+  </script>
+  <noscript><meta http-equiv="refresh" content="0; url=Spotify/index.html"></noscript>
   <title>Spotify clone</title>
 </head>
 <body>
