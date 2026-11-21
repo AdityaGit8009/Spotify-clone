@@ -132,3 +132,23 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
 
 .transport button:not(.primary-control) { color: var(--muted); font-size: .82rem; }
 .transport button:not(.primary-control):hover { color: var(--text); background: #2a352e; }
+
+.audio-player {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 2fr) minmax(0, 1fr);
+  grid-template-areas: "track transport sound" "track timeline sound";
+  gap: .15rem 1rem;
+}
+.now-playing { grid-area: track; }
+.transport { grid-area: transport; }
+.timeline {
+  grid-area: timeline;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: .65rem;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+  font-size: .78rem;
+  color: var(--muted);
+}
+input[type="range"] { width: 100%; min-width: 0; height: 1.5rem; margin: 0; accent-color: var(--accent); }

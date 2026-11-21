@@ -22,3 +22,13 @@
   .sidebar { padding-inline: .5rem; }
   .topbar-label { display: none; }
 }
+
+@media (max-width: 40rem) {
+  :root { --dock-height: 7.5rem; }
+  .audio-player {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "track sound" "transport timeline";
+    gap: .25rem .65rem;
+  }
+  .timeline { gap: .3rem; font-size: .72rem; }
+}
