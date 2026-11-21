@@ -1,8 +1,7 @@
 const audio = document.querySelector("#audio");
 
 function makeCoverCard(track) {
-  const card = document.createElement("button");
-  card.type = "button";
+  const card = document.createElement("article");
   card.className = "card";
 
   const image = document.createElement("img");
@@ -12,12 +11,9 @@ function makeCoverCard(track) {
   const title = document.createElement("span");
   title.className = "track-title";
   title.textContent = track.title;
-  card.append(image, title);
-
-  card.addEventListener("click", () => {
-    audio.src = track.path;
-    audio.play();
-  });
+  const availability = document.createElement("small");
+  availability.textContent = "Artwork only";
+  card.append(image, title, availability);
   return card;
 }
 

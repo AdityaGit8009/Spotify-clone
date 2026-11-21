@@ -20,3 +20,9 @@ test("every shelf cover uses its exact on-disk spelling", () => {
     for (const track of tracks) assertExactAsset(track.image);
   }
 });
+
+test("artwork-only entries never advertise a playback source", () => {
+  for (const track of Object.values(library.collections).flat()) {
+    assert.equal(track.path, undefined, track.title);
+  }
+});
