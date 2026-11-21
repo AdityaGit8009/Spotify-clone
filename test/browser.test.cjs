@@ -98,3 +98,42 @@ test("natural completion advances once and leaves the final track ready to repla
   await waitForPlayback(page, "Models");
   assert.ok(await media.evaluate(element => element.currentTime < 4));
 });
+
+test("seek and volume shortcuts follow the media while focused inputs keep their native keys", async t => {
+  const page = await newPage(t);
+  await page.goto(site.base + "Spotify/index.html");
+  await page.waitForFunction(() => !document.querySelector("#seek").disabled);
+  const media = page.locator("#audio");
+  await page.locator(".release").first().focus();
+  await page.keyboard.press("ArrowRight");
+  assert.ok(await media.evaluate(element => element.currentTime >= 4.9 && element.currentTime <= 5.1));
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(await media.evaluate(element => element.currentTime), 0);
+  const seek = page.getByRole("slider", {name: "Seek"});
+  await seek.focus();
+  await seek.press("ArrowRight");
+  assert.ok(await media.evaluate(element => element.currentTime > 0 && element.currentTime < 1));
+
+  const volume = page.getByRole("slider", {name: "Volume"});
+  await volume.evaluate(element => {
+    element.value = "42";
+    element.dispatchEvent(new Event("input", {bubbles: true}));
+  });
+  await page.getByRole("button", {name: "Mute", exact: true}).click();
+  assert.equal(await media.evaluate(element => element.muted), true);
+  await page.keyboard.press("m");
+  assert.deepEqual(await media.evaluate(element => [element.muted, element.volume]), [false, 0.42]);
+  await volume.focus();
+  await volume.press("Home");
+  await page.getByRole("button", {name: "Unmute", exact: true}).click();
+  assert.deepEqual(await media.evaluate(element => [element.muted, element.volume]), [false, 0.42]);
+
+  await page.keyboard.press("/");
+  const search = page.getByRole("searchbox");
+  assert.equal(await search.evaluate(element => element === document.activeElement), true);
+  await search.pressSequentially("m m");
+  await search.press("ArrowLeft");
+  assert.equal(await search.inputValue(), "m m");
+  assert.deepEqual(await media.evaluate(element => [element.muted, element.paused]), [false, true]);
+});
