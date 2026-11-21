@@ -1,122 +1,24 @@
-@media screen and (max-width: 500px) and (min-width: 0px){
-
-    .grp1 h1{
-        font-size: 25px;
-    }
-
-    .grp3 button{
-        display: none;
-    }
-
-    .grp3 button{
-        opacity: 0;
-    }
-    
-    .main{
-    height: calc(100vh - 150px);
-    }
-
-    .navbar{
-    padding: 5px 15px;
-    }
-
-    .navbar i{
-        padding: 10px;
-    }
-
-    .navbar input{
-        width: 150px;
-    }
-
-    .left{
-        display: none;
-    }
-
-    .right{
-        width: 100%;
-    }
-
-    .cardwrapper{
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .card-img{
-        width: 250px;
-    }
-
-    .card{
-        height: 200px;
-        width: 100%;
-        border-radius: 15px;
-        /* border: 2px solid red; */
-        padding: 10px;
-        position: relative;
-    }
-
-    .audio-player audio{
-        width: 100%;
-    }
-
+@media (max-width: 54rem) {
+  .layout { display: block; }
+  .sidebar { padding: .5rem 1rem; border: 0; border-bottom: 1px solid var(--border); }
+  .sidebar nav { display: flex; gap: .25rem; overflow-x: auto; }
+  .sidebar nav a { flex: 0 0 auto; }
+  .sidebar h2, .credit { display: none; }
+  main { padding-top: 1.6rem; }
 }
 
+@media (max-width: 40rem) {
+  .topbar { min-height: 3.7rem; }
+  .release-grid { grid-template-columns: 1fr; }
+  .release { min-height: 4.5rem; }
+  .release-copy strong { font-size: 1.23rem; }
+  .shelf { margin-top: 2rem; }
+  .cardwrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem .75rem; }
+  .audio-player { padding: .55rem 1rem max(.55rem, env(safe-area-inset-bottom)); }
+}
 
-
-@media screen and (max-width: 800px) and (min-width: 500px){
-
-    .main{
-    height: calc(100vh - 150px);
-    }
-
-    .navbar{
-    padding: 5px 15px;
-    }
-
-    .navbar i{
-        padding: 10px;
-    }
-
-    .grp3 button{
-        padding: 8px 10px;
-        color: white;
-        background-color: var(--bg-color);
-        outline: none;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-
-    .navbar input{
-        width: 150px;
-    }
-
-    .left{
-        display: none;
-    }
-
-    .right{
-        width: 100%;
-    }
-
-    .cardwrapper{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .card{
-        height: 200px;
-        width: 165px;
-        border-radius: 15px;
-        /* border: 2px solid red; */
-        padding: 10px;
-        position: relative;
-    }
-
-    .audio-player audio{
-        width: 100%;
-    }
-
+@media (max-width: 22rem) {
+  main { padding-inline: .85rem; }
+  .sidebar { padding-inline: .5rem; }
+  .topbar-label { display: none; }
 }
