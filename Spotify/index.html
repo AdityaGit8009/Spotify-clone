@@ -1,84 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="responsive.css">
-    <title>Spotify - Web Player : Music for everyone</title>
-  </head>
-  <body>
-    <!-- Navbar -->
-
-    <div class="navbar flex">
-      <div class="grp1">
-        <h1>A.</h1>
-      </div>
-      <div class="grp2">
-        <i class="fa-solid fa-house"></i>
-        <input type="text" name="" id="" placeholder="Search any song..." />
-      </div>
-      <div class="grp3">
-        <button>sign up</button>
-        <button>log in</button>
-      </div>
-    </div>
-
-    <!-- Main card -->
-
-    <div class="main">
-        <div class="left">
-            <h4>Your library</h4>
-
-            <div class="playlist">
-                <div class="iconwrapper">
-                    
-                </div>
-            </div>
-            <h4>Poadcast</h4>
-            <div class="poadcast"></div>
-            <div class="footer">
-                <h4>Made By <span>Aditya Pratap Vishwakarma</span> with <span>#teamDigiCoders</span></h4>
-            </div>
-        </div>
-        <div class="right">
-
-            <h2>Local releases</h2>
-            <div class="release-grid" id="release-list"></div>
-
-            <h2>Discover picks for you</h2>
-            <div class="cardwrapper" id="discover-song">
-
-
-            </div>
-
-            <h2>India's Best</h2>
-            <div class="cardwrapper" id="indias-best-song">
-
-            </div>
-
-            <h2>Popular Musics</h2>
-            <div class="cardwrapper" id="popular-song">
-
-            </div>
-
-        </div>
-    </div>
-
-    <div class="audio-player">
-        <audio id="audio" controls></audio>
-    </div>
-
-
-
-    <script src="catalog.js"></script>
-    <script src="script.js"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111715">
+  <title>Spotify clone · Music library</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+  <script defer src="catalog.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#releases"><span class="brand-mark" aria-hidden="true">A.</span>Spotify clone</a>
+    <span class="topbar-label">Music library</span>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <nav aria-label="Your library">
+        <h2>Your library</h2>
+        <a href="#releases">Local releases</a>
+        <a href="#discover-song">Discover picks</a>
+        <a href="#indias-best-song">India’s best</a>
+        <a href="#popular-song">Popular music</a>
+      </nav>
+      <p class="credit">Made by <strong>Aditya Pratap Vishwakarma</strong> with #teamDigiCoders</p>
+    </aside>
+    <main id="library">
+      <section id="releases" class="release-section" aria-labelledby="local-title">
+        <h1 id="local-title">Local releases</h1>
+        <div class="release-grid" id="release-list"></div>
+      </section>
+      <section class="shelf" aria-labelledby="discover-title">
+        <h2 id="discover-title">Discover picks for you</h2>
+        <div class="cardwrapper" id="discover-song"></div>
+      </section>
+      <section class="shelf" aria-labelledby="india-title">
+        <h2 id="india-title">India’s best</h2>
+        <div class="cardwrapper" id="indias-best-song"></div>
+      </section>
+      <section class="shelf" aria-labelledby="popular-title">
+        <h2 id="popular-title">Popular music</h2>
+        <div class="cardwrapper" id="popular-song"></div>
+      </section>
+    </main>
+  </div>
+  <footer class="audio-player" aria-label="Music player">
+    <audio id="audio" controls preload="metadata"></audio>
+  </footer>
+</body>
 </html>
