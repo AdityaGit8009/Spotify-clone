@@ -26,8 +26,10 @@ function filterLibrary() {
       if (match) matches++;
     }
     section.hidden = matches === 0;
+    shelfLinks.get(section.id).hidden = section.hidden;
     resultCount += matches;
   }
+  scheduleLocationUpdate();
   clearSearch.hidden = !search.value;
   if (!search.value.trim()) searchStatus.textContent = "";
   else if (resultCount === 0) searchStatus.textContent = `No matches for “${search.value.trim()}”.`;
@@ -76,3 +78,32 @@ preview.addEventListener("click", event => {
   if (event.clientX < bounds.left || event.clientX > bounds.right ||
       event.clientY < bounds.top || event.clientY > bounds.bottom) preview.close();
 });
+
+const shelfLinks = new Map([...document.querySelectorAll(".sidebar nav a")].map(link => [
+  link.hash.slice(1), link,
+]));
+let locationFrame;
+
+function syncLocation() {
+  locationFrame = null;
+  const visible = sections.filter(section => !section.hidden);
+  let current = visible[0];
+  for (const section of visible) {
+    if (section.getBoundingClientRect().top <= 32) current = section;
+  }
+  if (window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    current = visible.at(-1);
+  }
+  for (const [id, link] of shelfLinks) {
+    if (current?.id === id) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  }
+}
+
+function scheduleLocationUpdate() {
+  if (locationFrame == null) locationFrame = requestAnimationFrame(syncLocation);
+}
+
+window.addEventListener("scroll", scheduleLocationUpdate, {passive: true});
+window.addEventListener("resize", scheduleLocationUpdate);
+filterLibrary();

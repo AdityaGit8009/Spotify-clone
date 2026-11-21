@@ -103,7 +103,7 @@ function makeCoverCard(track) {
 }
 
 for (const [id, tracks] of Object.entries(musicLibrary.collections)) {
-  const shelf = document.getElementById(id);
+  const shelf = document.getElementById(id).querySelector(".cardwrapper");
   shelf.append(...tracks.map(makeCoverCard));
 }
 

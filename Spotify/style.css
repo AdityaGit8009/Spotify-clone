@@ -243,3 +243,7 @@ input[type="range"] { width: 100%; min-width: 0; height: 1.5rem; margin: 0; acce
   border-radius: .5rem;
   background: var(--page);
 }
+
+.sidebar { position: sticky; top: 0; align-self: start; max-height: calc(100vh - var(--dock-height)); overflow: auto; }
+.sidebar a[aria-current="location"] { color: var(--accent); background: #263329; }
+main > section { scroll-margin-top: 1rem; }
