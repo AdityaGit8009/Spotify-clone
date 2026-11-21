@@ -1,4 +1,20 @@
 const audio = document.querySelector("#audio");
+const releaseList = document.querySelector("#release-list");
+const tracks = musicLibrary.releases;
+let selectedIndex = -1;
+
+function selectTrack(index) {
+  if (index === selectedIndex) return;
+  selectedIndex = index;
+  const track = tracks[index];
+  audio.src = track.path;
+  document.querySelector("#current-title").textContent = track.title;
+  document.querySelector("#current-artist").textContent = track.artist;
+  for (const card of releaseList.children) {
+    if (card.dataset.track === track.id) card.setAttribute("aria-current", "true");
+    else card.removeAttribute("aria-current");
+  }
+}
 
 function makeCoverCard(track) {
   const card = document.createElement("article");
@@ -22,7 +38,7 @@ for (const [id, tracks] of Object.entries(musicLibrary.collections)) {
   shelf.append(...tracks.map(makeCoverCard));
 }
 
-function makeRelease(track) {
+function makeRelease(track, index) {
   const button = document.createElement("button");
   button.className = "release";
   button.type = "button";
@@ -46,10 +62,11 @@ function makeRelease(track) {
   button.append(sleeve, copy, action);
 
   button.addEventListener("click", () => {
-    audio.src = track.path;
+    selectTrack(index);
     audio.play();
   });
   return button;
 }
 
-document.querySelector("#release-list").append(...musicLibrary.releases.map(makeRelease));
+releaseList.append(...tracks.map(makeRelease));
+selectTrack(0);

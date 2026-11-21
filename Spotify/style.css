@@ -110,3 +110,9 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
   background: #1b231f;
 }
 .audio-player audio { width: min(100%, 42rem); }
+
+.audio-player { justify-content: space-between; gap: 1rem; }
+.now-playing { min-width: 0; display: grid; gap: .12rem; }
+.now-playing strong, .now-playing span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.now-playing span { color: var(--muted); font-size: .85rem; }
+.release[aria-current="true"] { border-color: var(--vinyl); }
