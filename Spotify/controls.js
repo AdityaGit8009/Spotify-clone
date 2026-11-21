@@ -30,3 +30,35 @@ for (const event of ["loadedmetadata", "durationchange", "timeupdate", "emptied"
 seek.addEventListener("input", () => seekTo(Number(seek.value)));
 document.querySelector(".timeline").hidden = false;
 syncTimeline();
+
+const mute = document.querySelector("#mute");
+const volume = document.querySelector("#volume");
+let lastAudibleVolume = audio.volume || 1;
+
+function syncVolume() {
+  const silent = audio.muted || audio.volume === 0;
+  if (audio.volume > 0) lastAudibleVolume = audio.volume;
+  mute.textContent = silent ? "Unmute" : "Mute";
+  volume.value = String(Math.round((audio.muted ? 0 : audio.volume) * 100));
+  volume.setAttribute("aria-valuetext", `${volume.value}%`);
+}
+
+function toggleMute() {
+  if (audio.muted || audio.volume === 0) {
+    if (audio.volume === 0) audio.volume = lastAudibleVolume;
+    audio.muted = false;
+  } else {
+    audio.muted = true;
+  }
+  syncVolume();
+}
+
+mute.addEventListener("click", toggleMute);
+volume.addEventListener("input", () => {
+  audio.muted = false;
+  audio.volume = Number(volume.value) / 100;
+  syncVolume();
+});
+audio.addEventListener("volumechange", syncVolume);
+document.querySelector(".volume-controls").hidden = false;
+syncVolume();
