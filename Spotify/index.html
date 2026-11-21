@@ -12,7 +12,7 @@
   <script defer src="controls.js"></script>
   <script defer src="browse.js"></script>
 </head>
-<body>
+<body class="static-mode">
   <a class="skip-link" href="#library">Skip to library</a>
   <header class="topbar">
     <a class="brand" href="#releases"><span class="brand-mark" aria-hidden="true">A.</span>Spotify clone</a>
@@ -46,6 +46,18 @@
       <section id="releases" class="release-section" aria-labelledby="local-title">
         <h1 id="local-title">Local releases</h1>
         <div class="release-grid" id="release-list"></div>
+        <noscript>
+          <div class="fallback-releases">
+            <article>
+              <h2>Win &amp; Lose</h2><p>Chime</p>
+              <audio controls preload="none" src="song/Chime - Win &amp; Lose  Melodic Dubstep  NCS13 - Copyright Free Music.mp3"></audio>
+            </article>
+            <article>
+              <h2>Models</h2><p>Hush</p>
+              <audio controls preload="none" src="song/Hush - Models  Dubstep  NCS - Copyright Free Music.mp3"></audio>
+            </article>
+          </div>
+        </noscript>
       </section>
       <section class="shelf" id="discover-song" aria-labelledby="discover-title">
         <h2 id="discover-title">Discover picks for you</h2>

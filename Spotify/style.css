@@ -264,3 +264,12 @@ html { scroll-padding-bottom: calc(var(--dock-height) + 1rem); }
 .skip-link:focus { transform: translateY(0); }
 .sidebar a { display: flex; align-items: center; min-height: 2.75rem; }
 .shortcut-help summary, #close-preview { min-height: 2.75rem; }
+
+.static-mode .audio-player, .static-mode .shelf, .static-mode .sidebar,
+.static-mode .library-search, .static-mode .shortcut-help { display: none; }
+.static-mode .layout { display: block; }
+.fallback-releases { display: grid; gap: 1rem; }
+.fallback-releases article { border: 1px solid var(--border); border-radius: .7rem; padding: 1rem; background: var(--surface); }
+.fallback-releases h2, .fallback-releases p { margin: 0 0 .5rem; }
+.fallback-releases p { color: var(--muted); }
+.fallback-releases audio { width: min(100%, 28rem); }

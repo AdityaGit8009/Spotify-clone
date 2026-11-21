@@ -175,3 +175,5 @@ audio.addEventListener("error", () => {
 audio.controls = false;
 document.querySelector(".transport").hidden = false;
 syncPlayback();
+
+document.body.classList.remove("static-mode");
