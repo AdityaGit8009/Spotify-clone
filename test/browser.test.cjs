@@ -137,3 +137,35 @@ test("seek and volume shortcuts follow the media while focused inputs keep their
   assert.equal(await search.inputValue(), "m m");
   assert.deepEqual(await media.evaluate(element => [element.muted, element.paused]), [false, true]);
 });
+
+test("search filters matching shelves and previewing covers leaves the selected recording playing", async t => {
+  const page = await newPage(t, {viewport: {width: 375, height: 780}});
+  await page.goto(site.base + "Spotify/index.html");
+  await page.getByRole("button", {name: "Play Models by Hush"}).click();
+  await waitForPlayback(page, "Models");
+  const search = page.getByRole("searchbox");
+  await search.fill("CHÍME win");
+  assert.equal(await page.locator(".release:visible").count(), 1);
+  assert.equal(await page.locator(".card:visible").count(), 0);
+  await search.fill("mere NAAM");
+  assert.equal(await page.locator(".card:visible").count(), 2);
+  assert.equal(await page.locator(".sidebar nav a:visible").count(), 2);
+  const card = page.locator(".card:visible").first();
+  await card.focus();
+  await card.press("Enter");
+  const dialog = page.getByRole("dialog");
+  await dialog.waitFor();
+  await dialog.locator("img").evaluate(image => image.decode());
+  assert.match(await dialog.textContent(), /Audio is unavailable/);
+  await page.keyboard.press("Escape");
+  await dialog.waitFor({state: "hidden"});
+  assert.equal(await card.evaluate(element => element === document.activeElement), true);
+  await waitForPlayback(page, "Models");
+
+  await search.fill("no matching record");
+  assert.match(await page.locator("#search-status").textContent(), /No matches/);
+  assert.equal(await page.locator(".sidebar nav a:visible").count(), 0);
+  await search.press("Escape");
+  assert.equal(await page.locator(".card:visible").count(), 22);
+  assert.equal(await page.locator(".release:visible").count(), 2);
+});
