@@ -116,3 +116,16 @@ h1 { margin: 0 0 1.5rem; font-size: clamp(2.5rem, 5vw, 5rem); letter-spacing: -.
 .now-playing strong, .now-playing span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .now-playing span { color: var(--muted); font-size: .85rem; }
 .release[aria-current="true"] { border-color: var(--vinyl); }
+
+.transport { display: flex; align-items: center; justify-content: center; gap: .25rem; }
+.transport button {
+  display: grid;
+  place-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.transport .primary-control { background: var(--accent); color: #172213; font-size: 1.1rem; font-weight: 750; }
+.transport .primary-control:hover { background: #ddffb5; }

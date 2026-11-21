@@ -1,6 +1,7 @@
 const audio = document.querySelector("#audio");
 const releaseList = document.querySelector("#release-list");
 const tracks = musicLibrary.releases;
+const playButton = document.querySelector("#toggle-play");
 let selectedIndex = -1;
 
 function selectTrack(index) {
@@ -14,6 +15,24 @@ function selectTrack(index) {
     if (card.dataset.track === track.id) card.setAttribute("aria-current", "true");
     else card.removeAttribute("aria-current");
   }
+}
+
+function syncPlayback() {
+  const playing = !audio.paused && !audio.ended;
+  const verb = playing ? "Pause" : "Play";
+  playButton.textContent = playing ? "Ⅱ" : "▶";
+  playButton.setAttribute("aria-label", verb);
+  for (const [index, card] of Array.from(releaseList.children).entries()) {
+    const active = index === selectedIndex && playing;
+    const track = tracks[index];
+    card.setAttribute("aria-label", `${active ? "Pause" : "Play"} ${track.title} by ${track.artist}`);
+    card.querySelector(".release-action").textContent = active ? "Ⅱ" : "▶";
+  }
+}
+
+function togglePlayback() {
+  if (audio.paused || audio.ended) audio.play();
+  else audio.pause();
 }
 
 function makeCoverCard(track) {
@@ -62,11 +81,22 @@ function makeRelease(track, index) {
   button.append(sleeve, copy, action);
 
   button.addEventListener("click", () => {
-    selectTrack(index);
-    audio.play();
+    if (selectedIndex === index) togglePlayback();
+    else {
+      selectTrack(index);
+      audio.play();
+    }
   });
   return button;
 }
 
 releaseList.append(...tracks.map(makeRelease));
 selectTrack(0);
+
+playButton.addEventListener("click", togglePlayback);
+for (const event of ["play", "pause", "ended", "emptied"]) {
+  audio.addEventListener(event, syncPlayback);
+}
+audio.controls = false;
+document.querySelector(".transport").hidden = false;
+syncPlayback();
