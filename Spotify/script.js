@@ -82,6 +82,7 @@ function moveTrack(direction) {
 function makeCoverCard(track) {
   const card = document.createElement("article");
   card.className = "card";
+  card.dataset.search = track.title;
 
   const image = document.createElement("img");
   image.src = track.image;
@@ -106,6 +107,7 @@ function makeRelease(track, index) {
   button.className = "release";
   button.type = "button";
   button.dataset.track = track.id;
+  button.dataset.search = `${track.title} ${track.artist} ${track.genre}`;
   button.setAttribute("aria-label", `Play ${track.title} by ${track.artist}`);
 
   const sleeve = document.createElement("span");
