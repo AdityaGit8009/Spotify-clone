@@ -2,10 +2,19 @@ const audio = document.querySelector("#audio");
 const releaseList = document.querySelector("#release-list");
 const tracks = musicLibrary.releases;
 const playButton = document.querySelector("#toggle-play");
+const playbackStatus = document.querySelector("#playback-status");
 let selectedIndex = -1;
+let playRevision = 0;
+let playbackMessage = "";
+let buffering = false;
+let wantsPlayback = false;
 
 function selectTrack(index) {
   if (index === selectedIndex) return;
+  playRevision++;
+  playbackMessage = "";
+  buffering = false;
+  wantsPlayback = false;
   selectedIndex = index;
   const track = tracks[index];
   audio.src = track.path;
@@ -20,6 +29,12 @@ function selectTrack(index) {
 function syncPlayback() {
   const playing = !audio.paused && !audio.ended;
   const verb = playing ? "Pause" : "Play";
+  let description = "Ready";
+  if (playing) description = buffering ? "Loading" : "Playing";
+  else if (audio.ended) description = "Finished";
+  else if (audio.currentTime > 0) description = "Paused";
+  const message = playbackMessage || description;
+  if (playbackStatus.textContent !== message) playbackStatus.textContent = message;
   playButton.textContent = playing ? "Ⅱ" : "▶";
   playButton.setAttribute("aria-label", verb);
   for (const [index, card] of Array.from(releaseList.children).entries()) {
@@ -30,16 +45,37 @@ function syncPlayback() {
   }
 }
 
+function startPlayback() {
+  const revision = ++playRevision;
+  wantsPlayback = true;
+  playbackMessage = "";
+  if (audio.error) audio.load();
+  audio.play().catch(error => {
+    if (revision !== playRevision) return;
+    wantsPlayback = false;
+    buffering = false;
+    if (error.name !== "AbortError") {
+      playbackMessage = error.name === "NotAllowedError" ? "Press play to start" : "Audio unavailable. Press play to retry.";
+    }
+    syncPlayback();
+  });
+}
+
 function togglePlayback() {
-  if (audio.ended) audio.currentTime = 0;
-  if (audio.paused) audio.play();
-  else audio.pause();
+  if (wantsPlayback || (!audio.paused && !audio.ended)) {
+    playRevision++;
+    wantsPlayback = false;
+    audio.pause();
+  } else {
+    if (audio.ended) audio.currentTime = 0;
+    startPlayback();
+  }
 }
 
 function moveTrack(direction) {
-  const playing = !audio.paused && !audio.ended;
+  const playing = wantsPlayback || (!audio.paused && !audio.ended);
   selectTrack((selectedIndex + direction + tracks.length) % tracks.length);
-  if (playing) audio.play();
+  if (playing) startPlayback();
   syncPlayback();
 }
 
@@ -92,7 +128,7 @@ function makeRelease(track, index) {
     if (selectedIndex === index) togglePlayback();
     else {
       selectTrack(index);
-      audio.play();
+      startPlayback();
     }
   });
   return button;
@@ -108,10 +144,26 @@ for (const event of ["play", "pause", "ended", "emptied"]) {
   audio.addEventListener(event, syncPlayback);
 }
 audio.addEventListener("ended", () => {
-  if (audio.ended && selectedIndex < tracks.length - 1) {
+  if (!audio.ended) return;
+  if (wantsPlayback && selectedIndex < tracks.length - 1) {
     selectTrack(selectedIndex + 1);
-    audio.play();
+    startPlayback();
+  } else {
+    wantsPlayback = false;
+    syncPlayback();
   }
+});
+audio.addEventListener("waiting", () => { buffering = true; syncPlayback(); });
+audio.addEventListener("playing", () => { buffering = false; syncPlayback(); });
+audio.addEventListener("pause", () => {
+  if (audio.paused && !audio.ended) wantsPlayback = false;
+});
+audio.addEventListener("error", () => {
+  if (!audio.error) return;
+  wantsPlayback = false;
+  buffering = false;
+  playbackMessage = "Audio unavailable. Press play to retry.";
+  syncPlayback();
 });
 audio.controls = false;
 document.querySelector(".transport").hidden = false;

@@ -163,3 +163,5 @@ input[type="range"] { width: 100%; min-width: 0; height: 1.5rem; margin: 0; acce
   font-size: .78rem;
 }
 .volume-controls input { width: clamp(2.8rem, 6vw, 7rem); }
+
+.now-playing small { color: var(--accent); font-size: .73rem; }
